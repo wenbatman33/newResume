@@ -628,12 +628,14 @@ section {
 #mbp{
   position: absolute;
   width: 100%;
-  top: 20%;
+  top: 0;
   height: 100vh;
   text-align: center;
   z-index: 3;
+  overflow: hidden;
 }
 #mbp img{
+  padding-top: 10%;
   width: 100%;
   max-width: 800px;
   min-width: 70%;
@@ -695,3 +697,36 @@ h1.title{
 .sub{
   cursor:default;
 }
+@media (min-device-width: 0px) and (max-device-width : 789px) {
+  .header {
+    height: 40vh;
+  }
+  #particles-js{
+    height: 40vh;
+  }
+  #mbp{
+    height: 40vh;
+  }
+  .canvas-background {
+    height: 40vh;
+  }
+  .header .container-fluid {
+    top:25%;
+  }
+  .about{
+    padding-top: 10px;
+  }
+}
+/*@media screen and (min-device-width: 0px) and (max-device-width : 530px) {
+  #mbp img{
+    width: 40vh;
+  }
+}
+@media screen and (min-device-width:531px) and (max-device-width : 789px) {
+  #mbp img{
+    width: 10vh;
+  }
+  #mbp{
+    top:5%;
+  }
+}*/
