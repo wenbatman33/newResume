@@ -193,6 +193,7 @@ section {
     .header p {
         font-size: 20px;
     }
+
 }
 @media (min-width: 992px) {
     .header h1 {
@@ -361,6 +362,9 @@ section {
     .timeline .job-meta {
         position: static;
         margin-bottom: 15px
+    }
+    .location{
+      display: none;
     }
 }
 
@@ -621,7 +625,7 @@ section {
   right: 0;
   width: 50%;
   height: 100vh;
-  background-image: linear-gradient(to bottom right, #8fd3f4 0%, #84fab0 100%);
+  background-image: linear-gradient(to bottom right, #26A0EB 0%, #4BE2FD 100%);
   z-index: 2;
   opacity:1;
 }
@@ -651,7 +655,7 @@ section {
   padding: 0;
   z-index: 1;
   overflow: hidden;
-  background-image: linear-gradient(to bottom right, #f093fb 0%, #f5576c 100%);
+  background-image: linear-gradient(to bottom right, #E59DB3 0%, #FDBDCE 100%);
 }
 
 .stalker {
