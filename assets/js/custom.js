@@ -1,10 +1,5 @@
 (function($) {
     'use strict';
-    $(window).load(function() {
-        /* PreLoader */
-        $('.status').fadeOut();
-        $('.preloader').delay(350).fadeOut('fast');
-    });
     /* Backstretch */
     // $.backstretch('assets/images/background/home.png');
     /* Animation Backstretch On Page Load */
