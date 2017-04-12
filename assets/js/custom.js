@@ -3,7 +3,7 @@
     $(window).load(function() {
         /* PreLoader */
         $('.status').fadeOut();
-        $('.preloader').delay(350).fadeOut(500);
+        $('.preloader').delay(350).fadeOut('fast');
     });
     /* Backstretch */
     // $.backstretch('assets/images/background/home.png');
