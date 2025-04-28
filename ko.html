@@ -140,6 +140,11 @@ consonants.forEach((consonant, rowIndex) => {
 
 // 唸出聲音＋高亮
 function speakHangul(text, cellElement = null) {
+  if (!yunaVoice) {
+    const voices = speechSynthesis.getVoices();
+    yunaVoice = voices.find(voice => voice.name.includes('Yuna') && voice.lang === 'ko-KR');
+  }
+
   speechSynthesis.cancel(); // 取消上一個發音
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'ko-KR';
