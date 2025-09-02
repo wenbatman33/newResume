@@ -1,7 +1,7 @@
 {
   "name": "LINE 檢測 PWA",
   "short_name": "LineOpen",
-  "start_url": "/line.html",
+  "start_url": "/newResume/line.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#06c755",
