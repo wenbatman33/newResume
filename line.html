@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#06c755" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <title>LINE 檢測</title>
+  <script>
+    function openLine() {
+      const liffId = "2007181019-Xm8l7Vj0";
+      const ua = navigator.userAgent || "";
+      const isAndroid = /Android/i.test(ua);
+      const isIOS = /iPhone|iPad|iPod/i.test(ua);
+      const inLINE = /Line\/\d/i.test(ua); // LINE 內建瀏覽器
+      const isStandalone = window.matchMedia?.('(display-mode: standalone)')?.matches
+                           || window.navigator.standalone === true; // PWA 模式
+    
+      // 已在 LINE 內建瀏覽器 → 直接用 HTTPS LIFF，不會有彈窗
+      if (inLINE) {
+        window.location.href = `https://liff.line.me/${liffId}`;
+        return;
+      }
+
+      // PWA 模式：多數情況可直接 line:// 而不彈窗
+      if (isStandalone) {
+        window.location.href = `line://app/${liffId}`;
+        setTimeout(() => {
+          if (isIOS) {
+            window.location.href = "https://apps.apple.com/app/line/id443904275";
+          } else if (isAndroid) {
+            window.location.href = "https://play.google.com/store/apps/details?id=jp.naver.line.android";
+          } else {
+            window.location.href = "https://line.me/download";
+          }
+        }, 1500);
+        return;
+      }
+
+      // ANDROID：使用 intent:// 嘗試降低「是否開啟」的確認
+      if (isAndroid) {
+        const fallback = encodeURIComponent("https://play.google.com/store/apps/details?id=jp.naver.line.android");
+        window.location.href = `intent://app/${liffId}#Intent;scheme=line;package=jp.naver.line.android;S.browser_fallback_url=${fallback};end`;
+        return;
+      }
+
+      // iOS/其他：一律會看到確認；改用 line:// 並提供 fallback
+      window.location.href = `line://app/${liffId}`;
+      setTimeout(() => {
+        if (isIOS) {
+          window.location.href = "https://apps.apple.com/app/line/id443904275";
+        } else if (isAndroid) {
+          window.location.href = "https://play.google.com/store/apps/details?id=jp.naver.line.android";
+        } else {
+          window.location.href = "https://line.me/download";
+        }
+      }, 1500);
+    }
+    
+    // PWA: 註冊 Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').catch(console.error);
+      });
+    }
+
+    // PWA: 安裝提示（Android/桌面 Chrome）
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'inline-block';
+    });
+
+    function installApp() {
+      const btn = document.getElementById('installBtn');
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(() => {
+        if (btn) btn.style.display = 'none';
+        deferredPrompt = null;
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'none';
+    });
+  </script>
+</head>
+<body>
+  <button onclick="openLine()">打開 LINE</button>
+  <button id="installBtn" onclick="installApp()" style="display:none; margin-left: 12px;">
+    安裝 App
+  </button>
+</body>
+  <p style="margin-top:12px;font-size:14px;line-height:1.5;">
+    提示：若在一般瀏覽器（Safari/Chrome）點擊 <code>line://</code> 或 LIFF 深連結，iOS/多數瀏覽器會出現「要在 LINE 中打開嗎？」的系統確認，這是無法關閉的保護機制。<br/>
+    建議做法：<br/>
+    1) 在 LINE 內建瀏覽器內開啟此頁（例如從 LINE 訊息點連結），或<br/>
+    2) Android 可優先使用 <code>intent://</code>，可減少但不保證取消確認彈窗。
+  </p>
+  <p style="margin-top:8px;font-size:13px;color:#555;">
+    額外提示：若將本頁安裝為 PWA（加入主畫面），在獨立應用模式下點擊按鈕，通常不會再出現「要在 LINE 中打開嗎？」的彈窗（尤其 Android 裝置）。
+  </p>
+</html>
